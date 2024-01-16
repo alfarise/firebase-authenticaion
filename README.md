@@ -1,3 +1,3 @@
-# Node Express Template
+# Firebase Authentication
 
-This is Node Express template project for build an http API service.
+Custom Firebase authentication service.
