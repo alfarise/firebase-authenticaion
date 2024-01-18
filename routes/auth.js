@@ -10,6 +10,7 @@ const {
 } = require('firebase/auth');
 
 const { getAuth: adminGetAuth } = require('firebase-admin/auth');
+const { FirebaseError } = require('firebase/app');
 
 router.post('/login', async (req, res) => {
   const {
@@ -39,10 +40,33 @@ router.post('/login', async (req, res) => {
       })
       .end();
   } catch (error) {
-    res.status(500)
+    let statusCode = 500;
+    let errorCode = '';
+    let message = '';
+
+    if (error instanceof FirebaseError) {
+      statusCode = 400;
+      errorCode = error.code;
+
+      switch (errorCode) {
+        case 'auth/missing-email':
+          message = 'Email Empty';
+          break;
+        case 'auth/missing-password':
+          message = 'Password Empty';
+          break;
+        case 'auth/invalid-credential':
+          message = 'Email or Password Wrong';
+          break;
+        default:
+          message = `Error Code: (${errorCode})`;
+      }
+    }
+
+    res.status(statusCode)
       .json({
         status: 'error',
-        message: error.message,
+        message: message || error.message,
       })
       .end();
   }
