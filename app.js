@@ -18,6 +18,7 @@ const {
   FIREBASE_BUCKET_STORAGE,
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
+  FIREBASE_ADMIN_KEY,
 } = process.env;
 
 const firebaseConfig = {
@@ -29,7 +30,7 @@ const firebaseConfig = {
   appId: FIREBASE_APP_ID,
 };
 
-const firebaseAdminAccount = require('./firebase-admin-key.json');
+const firebaseAdminAccount = require(FIREBASE_ADMIN_KEY);
 
 try {
   clientApp(firebaseConfig);
